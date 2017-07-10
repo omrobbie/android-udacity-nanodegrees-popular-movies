@@ -16,6 +16,10 @@
         "source": "C:\\Users\\User\\.android\\build-cache\\59a7a1ebe58452af507dc7cc87f5a08aab65aa44\\output\\res\\layout\\abc_action_menu_item_layout.xml"
     },
     {
+        "merged": "C:\\Users\\User\\Documents\\AndroidStudioProjects\\PopMovies\\app\\build\\intermediates\\res\\merged\\debug\\layout\\detail_info.xml",
+        "source": "C:\\Users\\User\\Documents\\AndroidStudioProjects\\PopMovies\\app\\src\\main\\res\\layout\\detail_info.xml"
+    },
+    {
         "merged": "C:\\Users\\User\\Documents\\AndroidStudioProjects\\PopMovies\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_activity_chooser_view.xml",
         "source": "C:\\Users\\User\\.android\\build-cache\\59a7a1ebe58452af507dc7cc87f5a08aab65aa44\\output\\res\\layout\\abc_activity_chooser_view.xml"
     },
@@ -108,8 +112,16 @@
         "source": "C:\\Users\\User\\.android\\build-cache\\a752d10068be981ed8bd082a4ca1ece8cb01f2c6\\output\\res\\layout\\design_menu_item_action_area.xml"
     },
     {
+        "merged": "C:\\Users\\User\\Documents\\AndroidStudioProjects\\PopMovies\\app\\build\\intermediates\\res\\merged\\debug\\layout\\detail_appbar.xml",
+        "source": "C:\\Users\\User\\Documents\\AndroidStudioProjects\\PopMovies\\app\\src\\main\\res\\layout\\detail_appbar.xml"
+    },
+    {
         "merged": "C:\\Users\\User\\Documents\\AndroidStudioProjects\\PopMovies\\app\\build\\intermediates\\res\\merged\\debug\\layout\\design_layout_tab_text.xml",
         "source": "C:\\Users\\User\\.android\\build-cache\\a752d10068be981ed8bd082a4ca1ece8cb01f2c6\\output\\res\\layout\\design_layout_tab_text.xml"
+    },
+    {
+        "merged": "C:\\Users\\User\\Documents\\AndroidStudioProjects\\PopMovies\\app\\build\\intermediates\\res\\merged\\debug\\layout\\detail_rating.xml",
+        "source": "C:\\Users\\User\\Documents\\AndroidStudioProjects\\PopMovies\\app\\src\\main\\res\\layout\\detail_rating.xml"
     },
     {
         "merged": "C:\\Users\\User\\Documents\\AndroidStudioProjects\\PopMovies\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_action_mode_close_item_material.xml",
@@ -182,6 +194,10 @@
     {
         "merged": "C:\\Users\\User\\Documents\\AndroidStudioProjects\\PopMovies\\app\\build\\intermediates\\res\\merged\\debug\\layout\\notification_template_icon_group.xml",
         "source": "C:\\Users\\User\\.android\\build-cache\\59a7a1ebe58452af507dc7cc87f5a08aab65aa44\\output\\res\\layout\\notification_template_icon_group.xml"
+    },
+    {
+        "merged": "C:\\Users\\User\\Documents\\AndroidStudioProjects\\PopMovies\\app\\build\\intermediates\\res\\merged\\debug\\layout\\detail_synopsis.xml",
+        "source": "C:\\Users\\User\\Documents\\AndroidStudioProjects\\PopMovies\\app\\src\\main\\res\\layout\\detail_synopsis.xml"
     },
     {
         "merged": "C:\\Users\\User\\Documents\\AndroidStudioProjects\\PopMovies\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_list_menu_item_icon.xml",
