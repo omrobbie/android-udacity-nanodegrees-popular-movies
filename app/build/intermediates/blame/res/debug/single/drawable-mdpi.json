@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "C:\\Users\\User\\Documents\\AndroidStudioProjects\\PopMovies\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi\\ic_star_border_black_24dp.png",
+        "source": "C:\\Users\\User\\Documents\\AndroidStudioProjects\\PopMovies\\app\\build\\generated\\res\\pngs\\debug\\drawable-mdpi\\ic_star_border_black_24dp.png"
+    },
+    {
+        "merged": "C:\\Users\\User\\Documents\\AndroidStudioProjects\\PopMovies\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi\\ic_star_half_black_24dp.png",
+        "source": "C:\\Users\\User\\Documents\\AndroidStudioProjects\\PopMovies\\app\\build\\generated\\res\\pngs\\debug\\drawable-mdpi\\ic_star_half_black_24dp.png"
+    },
+    {
+        "merged": "C:\\Users\\User\\Documents\\AndroidStudioProjects\\PopMovies\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi\\ic_star_black_24dp.png",
+        "source": "C:\\Users\\User\\Documents\\AndroidStudioProjects\\PopMovies\\app\\build\\generated\\res\\pngs\\debug\\drawable-mdpi\\ic_star_black_24dp.png"
+    }
+]
