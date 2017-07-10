@@ -20,13 +20,26 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.BindViews;
+import butterknife.ButterKnife;
+
 public class DetailActivity extends AppCompatActivity {
 
-    Toolbar toolbar;
-    ImageView backdrop, poster;
-    TextView releaseDate, rating, synopsis;
-    CoordinatorLayout parentDetail;
-    List<ImageView> ratingStarViews;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.backdrop) ImageView backdrop;
+    @BindView(R.id.poster) ImageView poster;
+    @BindView(R.id.releaseDate) TextView releaseDate;
+    @BindView(R.id.rating) TextView rating;
+    @BindView(R.id.synopsis) TextView synopsis;
+    @BindView(R.id.parentDetail) CoordinatorLayout parentDetail;
+    @BindViews({
+            R.id.star1,
+            R.id.star2,
+            R.id.star3,
+            R.id.star4,
+            R.id.star5
+    }) List<ImageView> ratingStarViews;
 
     private Gson gson = new Gson();
 
@@ -34,21 +47,7 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        backdrop = (ImageView) findViewById(R.id.backdrop);
-        poster = (ImageView) findViewById(R.id.poster);
-        releaseDate = (TextView) findViewById(R.id.releaseDate);
-        rating = (TextView) findViewById(R.id.rating);
-        synopsis = (TextView) findViewById(R.id.synopsis);
-        parentDetail = (CoordinatorLayout) findViewById(R.id.parentDetail);
-
-        ratingStarViews = new ArrayList<>();
-        ratingStarViews.add(0, (ImageView) findViewById(R.id.star1));
-        ratingStarViews.add(1, (ImageView) findViewById(R.id.star2));
-        ratingStarViews.add(2, (ImageView) findViewById(R.id.star3));
-        ratingStarViews.add(3, (ImageView) findViewById(R.id.star4));
-        ratingStarViews.add(4, (ImageView) findViewById(R.id.star5));
+        ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
 

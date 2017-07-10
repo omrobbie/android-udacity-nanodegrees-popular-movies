@@ -16,6 +16,8 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -26,10 +28,11 @@ import com.omrobbie.popmovies.model.MovieResponse;
 
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
-    Toolbar toolbar;
-    SwipeRefreshLayout swipeRefresh;
-    RecyclerView rv;
-    RelativeLayout parentMain;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.swipeRefresh) SwipeRefreshLayout swipeRefresh;
+    @BindView(R.id.rv) RecyclerView rv;
+    @BindView(R.id.parentMain) RelativeLayout parentMain;
+
     String sHighestRated;
     String sMostPopular;
 
@@ -46,11 +49,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        swipeRefresh = (SwipeRefreshLayout) findViewById(R.id.swipeRefresh);
-        rv = (RecyclerView) findViewById(R.id.rv);
-        parentMain = (RelativeLayout) findViewById(R.id.parentMain);
+        ButterKnife.bind(this);
 
         sHighestRated = "High Rated";
         sMostPopular = "Most Popular";

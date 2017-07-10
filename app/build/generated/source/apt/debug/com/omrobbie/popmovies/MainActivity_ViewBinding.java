@@ -1,8 +1,6 @@
 // Generated code from Butter Knife. Do not modify!
 package com.omrobbie.popmovies;
 
-import android.content.Context;
-import android.content.res.Resources;
 import android.support.annotation.CallSuper;
 import android.support.annotation.UiThread;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -30,12 +28,7 @@ public class MainActivity_ViewBinding implements Unbinder {
     target.toolbar = Utils.findRequiredViewAsType(source, R.id.toolbar, "field 'toolbar'", Toolbar.class);
     target.swipeRefresh = Utils.findRequiredViewAsType(source, R.id.swipeRefresh, "field 'swipeRefresh'", SwipeRefreshLayout.class);
     target.rv = Utils.findRequiredViewAsType(source, R.id.rv, "field 'rv'", RecyclerView.class);
-    target.parentMain = Utils.findRequiredViewAsType(source, R.id.parentMain, "field 'parentDetail'", RelativeLayout.class);
-
-    Context context = source.getContext();
-    Resources res = context.getResources();
-    target.sHighestRated = res.getString(R.string.highest_rated);
-    target.sMostPopular = res.getString(R.string.most_popular);
+    target.parentMain = Utils.findRequiredViewAsType(source, R.id.parentMain, "field 'parentMain'", RelativeLayout.class);
   }
 
   @Override

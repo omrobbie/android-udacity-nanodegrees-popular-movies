@@ -85,6 +85,7 @@ MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\User\.android
 MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\User\.android\build-cache\ef89b86127eaede3d61bf335c6b54bf38b395588\output\AndroidManifest.xml:21:5-23:63
 MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\User\.android\build-cache\41b33593c3d785474e06bdae7dc1e81d42119e22\output\AndroidManifest.xml:21:5-23:58
 MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\User\.android\build-cache\5596a2c55b8cd3e31b0542628d9411ddb6aeff45\output\AndroidManifest.xml:21:5-23:61
+MERGED from [com.jakewharton:butterknife:8.7.0] C:\Users\User\.android\build-cache\74af9d2debc768db30402a1fb3734585ad6e23a7\output\AndroidManifest.xml:5:5-43
 MERGED from [com.android.support:support-compat:25.3.1] C:\Users\User\.android\build-cache\427316621e0fc412220b3e855cd46f0fabd7fbf4\output\AndroidManifest.xml:21:5-23:58
 	tools:overrideLibrary
 		ADDED from [com.android.support:design:25.3.1] C:\Users\User\.android\build-cache\a752d10068be981ed8bd082a4ca1ece8cb01f2c6\output\AndroidManifest.xml:23:9-59
