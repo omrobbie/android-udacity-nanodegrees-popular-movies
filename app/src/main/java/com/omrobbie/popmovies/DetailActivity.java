@@ -1,17 +1,22 @@
 package com.omrobbie.popmovies;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.squareup.picasso.Picasso;
-
+import com.omrobbie.popmovies.adapter.TrailerAdapter;
 import com.omrobbie.popmovies.model.MovieItem;
+import com.omrobbie.popmovies.model.TrailerItem;
+import com.omrobbie.popmovies.model.TrailerResponse;
+import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -23,6 +28,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -41,7 +49,17 @@ public class DetailActivity extends AppCompatActivity {
             R.id.star5
     }) List<ImageView> ratingStarViews;
 
+    @BindView(R.id.rv_trailer) RecyclerView rv_trailer;
+
     private Gson gson = new Gson();
+    private long movieID;
+
+    private TrailerAdapter adapter;
+    private LinearLayoutManager layoutManager;
+
+    private Parcelable layoutManagerSavedState;
+    private Call<TrailerResponse> responseCall;
+    private ArrayList<TrailerItem> trailers = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +103,14 @@ public class DetailActivity extends AppCompatActivity {
                 ratingStarViews.get(integerPart).setImageResource(
                         R.drawable.ic_star_half_black_24dp);
             }
+
+            // Load trailer
+            layoutManager = new LinearLayoutManager(DetailActivity.this, LinearLayoutManager.HORIZONTAL, false);
+            adapter = new TrailerAdapter();
+            rv_trailer.setLayoutManager(layoutManager);
+            rv_trailer.setAdapter(adapter);
+
+            loadData();
         }
     }
 
@@ -112,5 +138,37 @@ public class DetailActivity extends AppCompatActivity {
         }
 
         return result;
+    }
+
+    private void loadData() {
+
+        String json = getIntent().getStringExtra("movie");
+        movieID = gson.fromJson(json, MovieItem.class).getId();
+
+        responseCall = App.getRestClient()
+                .getService()
+                .getTrailer(movieID);
+        
+        responseCall.enqueue(new Callback<TrailerResponse>() {
+            @Override
+            public void onResponse(Call<TrailerResponse> call, Response<TrailerResponse> response) {
+                if(response.isSuccessful()) {
+                    List<TrailerItem> data = new ArrayList<TrailerItem>();
+                    for (TrailerItem trailer : response.body().getResults()) {
+                        if (trailer.getType().equals("Trailer")) data.add(trailer);
+                    }
+
+                    trailers.clear();
+                    for (TrailerItem trailer : data) {
+                        trailers.add(trailer);
+                    }
+                    adapter.replaceAll(data);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TrailerResponse> call, Throwable t) {
+            }
+        });
     }
 }

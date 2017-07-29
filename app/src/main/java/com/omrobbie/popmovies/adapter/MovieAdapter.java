@@ -4,17 +4,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.omrobbie.popmovies.R;
 import com.omrobbie.popmovies.model.MovieItem;
 
-public class MovieListAdapter extends RecyclerView.Adapter<MostPopularViewHolder> {
+import java.util.ArrayList;
+import java.util.List;
+
+public class MovieAdapter extends RecyclerView.Adapter<MovieViewHolder> {
 
     private List<MovieItem> list = new ArrayList<>();
 
-    public MovieListAdapter() {
+    public MovieAdapter() {
     }
 
     public void replaceAll(List<MovieItem> list) {
@@ -29,15 +29,15 @@ public class MovieListAdapter extends RecyclerView.Adapter<MostPopularViewHolder
     }
 
     @Override
-    public MostPopularViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new MostPopularViewHolder(
+    public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new MovieViewHolder(
                 LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.row_most_popular, parent, false)
+                        .inflate(R.layout.activity_main_list, parent, false)
         );
     }
 
     @Override
-    public void onBindViewHolder(MostPopularViewHolder holder, int position) {
+    public void onBindViewHolder(MovieViewHolder holder, int position) {
         holder.bind(list.get(position));
     }
 

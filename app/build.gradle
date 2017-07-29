@@ -14,6 +14,8 @@ android {
         buildConfigField "String", "BASE_URL", "\"http://api.themoviedb.org/3/\""
         buildConfigField "String", "BASE_URL_IMG", "\"http://image.tmdb.org/t/p/\""
         buildConfigField "String", "DEFAULT_LANG", "\"en-US\""
+        buildConfigField "String", "YOUTUBE_URL", "\"http://www.youtube.com/watch?v=\""
+        buildConfigField "String", "YOUTUBE_URL_IMG", "\"http://img.youtube.com/vi/\""
     }
     buildTypes {
         release {

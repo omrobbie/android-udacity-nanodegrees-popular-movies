@@ -1,52 +1,25 @@
 package com.omrobbie.popmovies.model;
 
-import java.util.List;
-
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 public class MovieItem {
 
-    @SerializedName("overview")
-    private String overview;
-
-    @SerializedName("original_language")
-    private String originalLanguage;
-
-    @SerializedName("original_title")
-    private String originalTitle;
-
-    @SerializedName("video")
-    private boolean video;
-
-    @SerializedName("title")
-    private String title;
-
-    @SerializedName("genre_ids")
-    private List<Integer> genreIds;
-
-    @SerializedName("poster_path")
-    private String posterPath;
-
-    @SerializedName("backdrop_path")
-    private String backdropPath;
-
-    @SerializedName("release_date")
-    private String releaseDate;
-
-    @SerializedName("vote_average")
-    private double voteAverage;
-
-    @SerializedName("popularity")
-    private double popularity;
-
-    @SerializedName("id")
-    private long id;
-
-    @SerializedName("adult")
-    private boolean adult;
-
-    @SerializedName("vote_count")
-    private int voteCount;
+    @SerializedName("overview") private String overview;
+    @SerializedName("original_language") private String originalLanguage;
+    @SerializedName("original_title") private String originalTitle;
+    @SerializedName("video") private boolean video;
+    @SerializedName("title") private String title;
+    @SerializedName("genre_ids") private List<Integer> genreIds;
+    @SerializedName("poster_path") private String posterPath;
+    @SerializedName("backdrop_path") private String backdropPath;
+    @SerializedName("release_date") private String releaseDate;
+    @SerializedName("vote_average") private double voteAverage;
+    @SerializedName("popularity") private double popularity;
+    @SerializedName("id") private long id;
+    @SerializedName("adult") private boolean adult;
+    @SerializedName("vote_count") private int voteCount;
 
     public void setOverview(String overview) {
         this.overview = overview;
@@ -160,24 +133,4 @@ public class MovieItem {
         return voteCount;
     }
 
-    @Override
-    public String toString() {
-        return
-                "ResultsItem{" +
-                        "overview = '" + overview + '\'' +
-                        ",original_language = '" + originalLanguage + '\'' +
-                        ",original_title = '" + originalTitle + '\'' +
-                        ",video = '" + video + '\'' +
-                        ",title = '" + title + '\'' +
-                        ",genre_ids = '" + genreIds + '\'' +
-                        ",poster_path = '" + posterPath + '\'' +
-                        ",backdrop_path = '" + backdropPath + '\'' +
-                        ",release_date = '" + releaseDate + '\'' +
-                        ",vote_average = '" + voteAverage + '\'' +
-                        ",popularity = '" + popularity + '\'' +
-                        ",id = '" + id + '\'' +
-                        ",adult = '" + adult + '\'' +
-                        ",vote_count = '" + voteCount + '\'' +
-                        "}";
-    }
 }
