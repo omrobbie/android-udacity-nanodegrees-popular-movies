@@ -1,6 +1,7 @@
 package com.omrobbie.popmovies.restapi;
 
 import com.omrobbie.popmovies.model.MovieResponse;
+import com.omrobbie.popmovies.model.ReviewResponse;
 import com.omrobbie.popmovies.model.TrailerResponse;
 
 import retrofit2.Call;
@@ -18,5 +19,8 @@ public interface APICall {
 
     @GET("movie/{id}/videos?")
     Call<TrailerResponse> getTrailer(@Path("id") long id);
+
+    @GET("movie/{id}/reviews?")
+    Call<ReviewResponse> getReviews(@Path("id") long id);
 
 }

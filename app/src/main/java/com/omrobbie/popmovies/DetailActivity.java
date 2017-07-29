@@ -1,7 +1,6 @@
 package com.omrobbie.popmovies;
 
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,8 +11,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.omrobbie.popmovies.adapter.ReviewAdapter;
 import com.omrobbie.popmovies.adapter.TrailerAdapter;
 import com.omrobbie.popmovies.model.MovieItem;
+import com.omrobbie.popmovies.model.ReviewItem;
+import com.omrobbie.popmovies.model.ReviewResponse;
 import com.omrobbie.popmovies.model.TrailerItem;
 import com.omrobbie.popmovies.model.TrailerResponse;
 import com.squareup.picasso.Picasso;
@@ -49,17 +51,20 @@ public class DetailActivity extends AppCompatActivity {
             R.id.star5
     }) List<ImageView> ratingStarViews;
 
-    @BindView(R.id.rv_trailer) RecyclerView rv_trailer;
+    @BindView(R.id.rv_trailer) RecyclerView rvTrailer;
+    @BindView(R.id.rv_review) RecyclerView rvReview;
 
     private Gson gson = new Gson();
     private long movieID;
-
-    private TrailerAdapter adapter;
     private LinearLayoutManager layoutManager;
 
-    private Parcelable layoutManagerSavedState;
-    private Call<TrailerResponse> responseCall;
-    private ArrayList<TrailerItem> trailers = new ArrayList<>();
+    private ArrayList<TrailerItem> trailerItems = new ArrayList<>();
+    private Call<TrailerResponse> trailerResponseCall;
+    private TrailerAdapter trailerAdapter;
+
+    private ArrayList<ReviewItem> reviewItems = new ArrayList<>();
+    private Call<ReviewResponse> reviewResponseCall;
+    private ReviewAdapter reviewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,46 +77,51 @@ public class DetailActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        if (getIntent() != null) {
-            String json = getIntent().getStringExtra("movie");
-            MovieItem movie = gson.fromJson(json, MovieItem.class);
+        String json = getIntent().getStringExtra("movie");
+        MovieItem movie = gson.fromJson(json, MovieItem.class);
 
-            parentDetail.setVisibility(View.VISIBLE);
-            getSupportActionBar().setTitle(movie.getOriginalTitle());
-            Picasso.with(DetailActivity.this)
-                    .load(BuildConfig.BASE_URL_IMG + "w300" + movie.getBackdropPath())
-                    .into(backdrop);
+        parentDetail.setVisibility(View.VISIBLE);
+        getSupportActionBar().setTitle(movie.getOriginalTitle());
+        Picasso.with(DetailActivity.this)
+                .load(BuildConfig.BASE_URL_IMG + "w300" + movie.getBackdropPath())
+                .into(backdrop);
 
-            Picasso.with(DetailActivity.this)
-                    .load(BuildConfig.BASE_URL_IMG + "w185" + movie.getPosterPath())
-                    .into(poster);
+        Picasso.with(DetailActivity.this)
+                .load(BuildConfig.BASE_URL_IMG + "w185" + movie.getPosterPath())
+                .into(poster);
 
-            releaseDate.setText(getDateString(movie.getReleaseDate()));
-            rating.setText(String.valueOf(movie.getVoteAverage()));
-            synopsis.setText(movie.getOverview());
+        releaseDate.setText(getDateString(movie.getReleaseDate()));
+        rating.setText(String.valueOf(movie.getVoteAverage()));
+        synopsis.setText(movie.getOverview());
 
-            double userRating = movie.getVoteAverage() / 2;
-            int integerPart = (int) userRating;
+        double userRating = movie.getVoteAverage() / 2;
+        int integerPart = (int) userRating;
 
-            // Fill stars
-            for (int i = 0; i < integerPart; i++) {
-                ratingStarViews.get(i).setImageResource(R.drawable.ic_star_black_24dp);
-            }
-
-            // Fill half star
-            if (Math.round(userRating) > integerPart) {
-                ratingStarViews.get(integerPart).setImageResource(
-                        R.drawable.ic_star_half_black_24dp);
-            }
-
-            // Load trailer
-            layoutManager = new LinearLayoutManager(DetailActivity.this, LinearLayoutManager.HORIZONTAL, false);
-            adapter = new TrailerAdapter();
-            rv_trailer.setLayoutManager(layoutManager);
-            rv_trailer.setAdapter(adapter);
-
-            loadData();
+        // Fill stars
+        for (int i = 0; i < integerPart; i++) {
+            ratingStarViews.get(i).setImageResource(R.drawable.ic_star_black_24dp);
         }
+
+        // Fill half star
+        if (Math.round(userRating) > integerPart) {
+            ratingStarViews.get(integerPart).setImageResource(
+                    R.drawable.ic_star_half_black_24dp);
+        }
+
+        // Load trailer
+        layoutManager = new LinearLayoutManager(DetailActivity.this, LinearLayoutManager.HORIZONTAL, false);
+        trailerAdapter = new TrailerAdapter();
+        rvTrailer.setLayoutManager(layoutManager);
+        rvTrailer.setAdapter(trailerAdapter);
+
+        loadDataTrailer(movie.getId());
+
+        // Load review
+        reviewAdapter = new ReviewAdapter();
+        rvReview.setLayoutManager(new LinearLayoutManager(DetailActivity.this));
+        rvReview.setAdapter(reviewAdapter);
+
+        loadDataReview(movie.getId());
     }
 
     @Override
@@ -140,29 +150,25 @@ public class DetailActivity extends AppCompatActivity {
         return result;
     }
 
-    private void loadData() {
-
-        String json = getIntent().getStringExtra("movie");
-        movieID = gson.fromJson(json, MovieItem.class).getId();
-
-        responseCall = App.getRestClient()
+    private void loadDataTrailer(long movieID) {
+        trailerResponseCall = App.getRestClient()
                 .getService()
                 .getTrailer(movieID);
         
-        responseCall.enqueue(new Callback<TrailerResponse>() {
+        trailerResponseCall.enqueue(new Callback<TrailerResponse>() {
             @Override
             public void onResponse(Call<TrailerResponse> call, Response<TrailerResponse> response) {
                 if(response.isSuccessful()) {
-                    List<TrailerItem> data = new ArrayList<TrailerItem>();
+                    List<TrailerItem> data = new ArrayList<>();
                     for (TrailerItem trailer : response.body().getResults()) {
                         if (trailer.getType().equals("Trailer")) data.add(trailer);
                     }
 
-                    trailers.clear();
+                    trailerItems.clear();
                     for (TrailerItem trailer : data) {
-                        trailers.add(trailer);
+                        trailerItems.add(trailer);
                     }
-                    adapter.replaceAll(data);
+                    trailerAdapter.replaceAll(data);
                 }
             }
 
@@ -171,4 +177,33 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void loadDataReview(long movieID) {
+        reviewResponseCall = App.getRestClient()
+                .getService()
+                .getReviews(movieID);
+
+        reviewResponseCall.enqueue(new Callback<ReviewResponse>() {
+            @Override
+            public void onResponse(Call<ReviewResponse> call, Response<ReviewResponse> response) {
+                if(response.isSuccessful()) {
+                    List<ReviewItem> data = new ArrayList<>();
+                    for (ReviewItem review : response.body().getResults()) {
+                        data.add(review);
+                    }
+
+                    reviewItems.clear();
+                    for (ReviewItem review : data) {
+                        reviewItems.add(review);
+                    }
+                    reviewAdapter.replaceAll(data);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ReviewResponse> call, Throwable t) {
+            }
+        });
+    }
+
 }

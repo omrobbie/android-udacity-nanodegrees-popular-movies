@@ -25,6 +25,8 @@
 
             <include layout="@layout/detail_trailer" />
 
+            <include layout="@layout/detail_review" />
+
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
