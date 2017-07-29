@@ -15,3 +15,5 @@ API_KEY = "Salin dari API Key (v3 auth)"
 ### Syarat Kelulusan
 * #### Stage 1
   [https://review.udacity.com/#!/rubrics/66/view](https://review.udacity.com/#!/rubrics/66/view "klik untuk melihat persyaratan")
+* #### Stage 2
+  [https://review.udacity.com/#!/rubrics/67/view](https://review.udacity.com/#!/rubrics/67/view "klik untuk melihat persyaratan")
