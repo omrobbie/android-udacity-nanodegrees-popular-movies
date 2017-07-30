@@ -25,6 +25,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity"/>
         </activity>
+
+        <provider
+            android:exported="false"
+            android:authorities="com.omrobbie.popmovies"
+            android:name=".database.FavoriteContentProvider"/>
     </application>
 
 </manifest>

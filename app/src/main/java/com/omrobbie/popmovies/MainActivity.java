@@ -1,8 +1,12 @@
 package com.omrobbie.popmovies;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -14,9 +18,11 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.omrobbie.popmovies.adapter.MovieAdapter;
+import com.omrobbie.popmovies.database.FavoriteContract;
 import com.omrobbie.popmovies.model.MovieItem;
 import com.omrobbie.popmovies.model.MovieResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -34,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     String sHighestRated;
     String sMostPopular;
+    String sFavorite;
 
     private MovieAdapter adapter;
     private GridLayoutManager gridLayoutManager;
@@ -44,6 +51,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private int currentPage = 1;
     private Call<MovieResponse> responseCall;
 
+    private LoaderManager.LoaderCallbacks<Cursor> loaderCallbacks;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         sHighestRated = "High Rated";
         sMostPopular = "Most Popular";
+        sFavorite = "Favorite";
 
         setSupportActionBar(toolbar);
 
@@ -61,8 +71,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         getSupportActionBar().setSubtitle(sMostPopular);
         if (savedInstanceState != null) {
             selectedSort = savedInstanceState.getString("selectedSort");
-            if (selectedSort.equals("high_rated"))
+            if (selectedSort.equals("most_popular")) {
+                getSupportActionBar().setSubtitle(sMostPopular);
+            } else if (selectedSort.equals("high_rated")) {
                 getSupportActionBar().setSubtitle(sHighestRated);
+            } else getSupportActionBar().setSubtitle(sFavorite);
             layoutManagerSavedState = savedInstanceState.getParcelable("layout_manager");
         }
 
@@ -73,7 +86,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         swipeRefresh.setOnRefreshListener(this);
 
-        loadData(selectedSort);
+        // Load data
+        if (selectedSort .equals("user_favorites")) {
+            loadDataFavorite();
+            getSupportLoaderManager().restartLoader(2, null, loaderCallbacks);
+        } else loadData(selectedSort);
     }
 
     @Override
@@ -96,6 +113,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 currentPage = 1;
                 loadData(selectedSort);
                 getSupportActionBar().setSubtitle(sMostPopular);
+                return true;
+            case R.id.menu_favorite:
+                selectedSort = "user_favorites";
+                getSupportActionBar().setSubtitle(sFavorite);
+                loadDataFavorite();
+                getSupportLoaderManager().restartLoader(2, null, loaderCallbacks);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -165,5 +188,90 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private void loadFailed() {
         if (swipeRefresh.isRefreshing()) swipeRefresh.setRefreshing(false);
         Toast.makeText(this, "Failed to load data!", Toast.LENGTH_SHORT).show();
+    }
+
+    private void loadDataFavorite() {
+        loaderCallbacks = new LoaderManager.LoaderCallbacks<Cursor>() {
+            @Override
+            public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+                return new AsyncTaskLoader<Cursor>(MainActivity.this) {
+                    @Override
+                    public Cursor loadInBackground() {
+                        try {
+                            return getContentResolver().query(
+                                    FavoriteContract.FavoriteEntry.CONTENT_URI,
+                                    null,null,null,null
+                            );
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            return null;
+                        }
+                    }
+
+                    @Override
+                    protected void onStartLoading() {
+                        forceLoad();
+                    }
+                };
+            }
+
+            @Override
+            public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+                List<MovieItem> movieItems = new ArrayList<>();
+                data.moveToPosition(-1);
+                try {
+                    while (data.moveToNext()) {
+                        MovieItem movieItem = new MovieItem();
+                        movieItem.setPosterPath(
+                                data.getString(
+                                        data.getColumnIndex(FavoriteContract.FavoriteEntry.COLUMN_POSTER)
+                                )
+                        );
+                        movieItem.setOriginalTitle(
+                                data.getString(
+                                        data.getColumnIndex(FavoriteContract.FavoriteEntry.COLUMN_TITLE)
+                                )
+                        );
+                        movieItem.setBackdropPath(
+                                data.getString(
+                                        data.getColumnIndex(FavoriteContract.FavoriteEntry.COLUMN_BACKDROP)
+                                )
+                        );
+                        movieItem.setReleaseDate(
+                                data.getString(
+                                        data.getColumnIndex(FavoriteContract.FavoriteEntry.COLUMN_RELEASE_DATE)
+                                )
+                        );
+                        movieItem.setOverview(
+                                data.getString(
+                                        data.getColumnIndex(FavoriteContract.FavoriteEntry.COLUMN_SYNOPSIS)
+                                )
+                        );
+                        movieItem.setVoteAverage(
+                                data.getDouble(
+                                        data.getColumnIndex(FavoriteContract.FavoriteEntry.COLUMN_RATING)
+                                )
+                        );
+                        movieItem.setId(
+                                data.getLong(
+                                        data.getColumnIndex(FavoriteContract.FavoriteEntry.COLUMN_MOVIE_ID)
+                                )
+                        );
+
+                        movieItems.add(movieItem);
+                    }
+                } finally {
+                    data.close();
+                }
+
+                adapter.replaceAll(movieItems);
+                if (layoutManagerSavedState != null) rv.getLayoutManager().onRestoreInstanceState(layoutManagerSavedState);
+            }
+
+            @Override
+            public void onLoaderReset(Loader<Cursor> loader) {
+
+            }
+        };
     }
 }
