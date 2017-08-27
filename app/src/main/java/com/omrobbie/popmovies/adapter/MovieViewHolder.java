@@ -28,6 +28,8 @@ public class MovieViewHolder extends RecyclerView.ViewHolder {
     public void bind(final MovieItem data) {
         Picasso.with(itemView.getContext())
                 .load(BuildConfig.BASE_URL_IMG + "w185" + data.getPosterPath())
+                .resize(185, 278)
+                .centerCrop()
                 .into(imgMovie);
 
         itemView.setOnClickListener(new View.OnClickListener() {
