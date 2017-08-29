@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -14,7 +15,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.omrobbie.popmovies.adapter.MovieAdapter;
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.swipeRefresh) SwipeRefreshLayout swipeRefresh;
     @BindView(R.id.rv) RecyclerView rv;
-    @BindView(R.id.parentMain) RelativeLayout parentMain;
+    @BindView(R.id.parentMain) CoordinatorLayout parentMain;
 
     String sHighestRated;
     String sMostPopular;
